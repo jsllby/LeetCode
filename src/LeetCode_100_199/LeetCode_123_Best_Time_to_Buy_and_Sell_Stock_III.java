@@ -10,12 +10,12 @@ public class LeetCode_123_Best_Time_to_Buy_and_Sell_Stock_III {
         int profit_1 = 0;
         int profit_2 = 0;
 
-        for(int i=1;i<prices.length;i++){
-            profit_1 = Math.max(profit_1,prices[i]-buy_1);
-            buy_1 = Math.min(buy_1,prices[i]);
+        for (int i = 1; i < prices.length; i++) {
+            profit_1 = Math.max(profit_1, prices[i] - buy_1);
+            buy_1 = Math.min(buy_1, prices[i]);
 
-            profit_2 = Math.max(profit_2,prices[i]-buy_2);
-            buy_2 = Math.min(buy_2,prices[i]-profit_1);
+            profit_2 = Math.max(profit_2, prices[i] - buy_2);
+            buy_2 = Math.min(buy_2, prices[i] - profit_1);
         }
 
         return profit_2;
@@ -27,8 +27,9 @@ public class LeetCode_123_Best_Time_to_Buy_and_Sell_Stock_III {
 //        Arrays.fill(min, prices[0]);
 //        for (int i = 1; i < prices.length; i++) {
 //            for (int k = 1; k <= K; k++) {
-//                dp[k] = Math.max(dp[k], prices[i] - min[k]);
 //                min[k] = Math.min(min[k], prices[i] - dp[k-1]);
+//                dp[k] = Math.max(dp[k], prices[i] - min[k]);
+
 //            }
 //        }
 //        return dp[K];
