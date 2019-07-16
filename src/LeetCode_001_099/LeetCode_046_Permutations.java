@@ -76,7 +76,7 @@ public class LeetCode_046_Permutations {
 //        }
 //    }
 
-    // to be improved
+
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
