@@ -1,94 +1,69 @@
-import java.util.*;
-
 import structure.ListNode;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int[] x = {1, 2, 4};
-        int[] y = {1, 3, 4};
-        ListNode l1 = null;
-        ListNode l2 = null;
-        for (int i = x.length - 1; i >= 0; i--) {
-            ListNode temp = new ListNode(x[i]);
-            temp.next = l1;
-            l1 = temp;
-        }
-        for (int i = y.length - 1; i >= 0; i--) {
-            ListNode temp = new ListNode(y[i]);
-            temp.next = l2;
-            l2 = temp;
-        }
-
-
+//        String s1 = "adceb";
+//        String s2 = "*a*b";
+//        int[][] x = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        String[] s = {"eat", "tea", "tan", "ate", "nat", "bat"};
         Solution temp = new Solution();
-        ListNode n = temp.mergeTwoLists(l1, l2);
-        while (n.next != null) {
-            System.out.println(n.val);
-            n = n.next;
-        }
+        temp.solveNQueens(4);
         return;
     }
 }
 
 
 class Solution {
-    ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode dummy = new ListNode(0);
-        ListNode head = dummy;
-        while (l1 != null && l2 != null) {
-            if (l1.val <= l2.val) {
-                head.next = l1;
-                head = head.next;
-                l1 = l1.next;
-            }else{
-                head.next = l2;
-                head = head.next;
-                l2 = l2.next;
-            }
-        }
-        if(l1!=null)    head.next = l1;
-        if(l2!=null)    head.next = l2;
-        return dummy.next;
+
+    // 已经通过，是否有其他方法？未整理
+    List<List<String>> res = new ArrayList<>();
+    StringBuilder temp = new StringBuilder();
+
+    public List<List<String>> solveNQueens(int n) {
+        int[] pos = new int[n];
+        int[] column = new int[n], left = new int[2 * n], right = new int[2 * n];
+        for (int i = 0; i < n - 1; i++) temp.append('.');
+        helper(pos, n, column, left, right, 0);
+        return res;
     }
 
-    public ListNode mergeKLists(ListNode[] lists) {
-        if(lists.length==0) return null;
-        if(lists.length==1) return lists[0];
-        ListNode result = mergeTwoLists(lists[0],lists[1]);
-        for(int i = 2;i<lists.length;i++)   result = mergeTwoLists(result,lists[i]);
-        return result;
-
-//        ListNode dummy = new ListNode(0);
-//        ListNode cur = dummy;
-//
-//        int count = lists.length;
-//        for (ListNode n : lists) {
-//            if (n == null) count--;
-//        }
-//
-//        while (count > 1) {
-//            int index = -1, min = Integer.MAX_VALUE;
-//            for (int i = 0; i < lists.length; i++) {
-//                if (lists[i] != null && lists[i].val <= min) {
-//                    min = lists[i].val;
-//                    index = i;
-//                }
+    void helper(int[] pos, int n, int[] column, int[] left_diag, int[] right_diag, int queens) {
+        if (queens == n) {
+            List<String> result = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                StringBuilder s = new StringBuilder(temp);
+                s.insert(pos[i], 'Q');
+                result.add(s.toString());
+            }
+            res.add(result);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (column[i] != 1) {
+                int left = queens <= i ? i - queens : queens - i + n;
+                int right = queens + i < n ? queens + i : queens + i + 1;
+                if (left_diag[left] != 1 && right_diag[right] != 1) {
+                    pos[queens] = i;
+                    column[i] = 1;
+                    left_diag[left] = 1;
+                    right_diag[right] = 1;
+                    helper(pos, n, column, left_diag, right_diag, queens + 1);
+                    column[i] = 0;
+                    left_diag[left] = 0;
+                    right_diag[right] = 0;
+                }
+            }
+//            if (!map.containsKey(i)) {
+//                pos[queens] = i;
+//                map.put(i, 1);
+//                helper(pos, n, map, queens + 1);
+//                map.remove(i);
+////                pos[queens] = -1;
 //            }
-//
-//            cur.next = lists[index];
-//            cur = cur.next;
-//            lists[index] = lists[index].next;
-//            if(lists[index]==null)  count--;
-//        }
-//
-//        for(ListNode n:lists){
-//            if(n!=null){
-//                cur.next = n;
-//                break;;
-//            }
-//        }
-//        return dummy.next;
-
+        }
+        return;
     }
 }
 
